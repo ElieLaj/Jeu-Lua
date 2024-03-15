@@ -3,18 +3,16 @@ _G.Player = {}
 function Player(x, y, width, height, speed, color)
     return {
         x = x,
+        baseX = x,
         y = y,
+        baseY = y,
         width = width,
         height = height,
         speed = speed,
+        baseSpeed = speed,
         color = color,
 
-        setColor = function(self, color)
-            self.color = color
-        end,
-        setSpeed = function(self, speed)
-            self.speed = speed
-        end,
+
         moveLeft = function(self, dt)
             self.x = self.x - self.speed * dt
         end,
@@ -30,12 +28,13 @@ function Player(x, y, width, height, speed, color)
         getLocation = function(self)
             return self.x, self.y
         end,
-        getX = function(self)
-            return self.x
-        end,
-        getY = function(self)
-            return self.y
+        reset = function(self)
+            self.x = self.baseX
+            self.y = self.baseY
+            self.speed = self.baseSpeed
         end
+
+
     }
 end
 
