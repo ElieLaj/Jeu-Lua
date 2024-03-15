@@ -7,6 +7,7 @@ function Ball(x, y, width, height, speed, color)
     ball.hit = function(self, color)
         self.status.x = ball.status.x * -1
         ball.color = color
+        ball.speed = ball.speed + 10
     end
 
     ball.getStatus = function(self)
