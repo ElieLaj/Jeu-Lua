@@ -1,11 +1,14 @@
 local Player = require "player"
 local Ball = require "ball"
+local Bonus = require "bonus"
 
 local window = { x = 800, y = 600 }
 
 local player1 = Player(0, window.y / 2, 20, 60, 200, { 0, 0.4, 0.4 })
 local player2 = Player(window.x - 20, window.y / 2, 20, 60, 200, { 0, 0.4, 0.4 })
 local ball = Ball(window.x / 2, window.y / 2, 20, 20, 270, { 1, 1, 1 })
+local bonus = Bonus(0, 0, 30, 30, window.x, window.y, { 0, 0.4, 0.4 })
+
 local scores = { p1 = 0, p2 = 0 }
 
 local showTitleScreen = true
@@ -17,7 +20,7 @@ local p2Index = 1
 local p1Ready = false
 local p2Ready = false
 
-
+local nbHits = 0
 local game = false
 
 local function reset()
@@ -90,10 +93,12 @@ function love.update(dt)
         if ball.x <= player1.x + player1.width and ball.x + ball.width >= player1.x and
             ball.y <= player1.y + player1.height and ball.y + ball.height >= player1.y then
             ball:hit(player1.color)
+            nbHits = nbHits + 1
         end
         if ball.x <= player2.x + player2.width and ball.x + ball.width >= player2.x and
             ball.y <= player2.y + player2.height and ball.y + ball.height >= player2.y then
             ball:hit(player2.color)
+            nbHits = nbHits + 1
         end
 
         if ball.x <= 0 then
@@ -104,8 +109,12 @@ function love.update(dt)
             scores.p1 = scores.p1 + 1
             reset()
         end
-
         ball:move(dt)
+        if nbHits >= 4 and bonus.is == false then
+            if math.ceil(math.random(0, nbHits)) == nbHits then
+                bonus:draw()
+            end
+        end
     end
 end
 
@@ -137,6 +146,10 @@ function love.draw()
             love.graphics.print("Le joueur 2 est prêt", window.x / 2 + 105, window.y / 2 + 20)
         end
     elseif game == true then
+        if bonus.is == true then
+            love.graphics.setColor(bonus.color)
+            love.graphics.rectangle("fill", bonus.x, bonus.y, bonus.width, bonus.height)
+        end
         love.graphics.setColor(player1.color)
         love.graphics.rectangle("fill", player1.x, player1.y, player1.width, player1.height)
         love.graphics.setColor(player2.color)
