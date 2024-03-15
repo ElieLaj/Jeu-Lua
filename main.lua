@@ -100,6 +100,17 @@ function love.update(dt)
             ball:hit(player2.color)
             nbHits = nbHits + 1
         end
+        if bonus.is == true then
+            if ball.x <= bonus.x + bonus.width and ball.x + ball.width >= bonus.x and
+                ball.y <= bonus.y + bonus.height and ball.y + ball.height >= bonus.y then
+                bonus.is = false
+                if ball.color == player1.color then
+                    player1.speed = player1.speed + bonus:effect()
+                else
+                    player2.speed = player2.speed + bonus:effect()
+                end
+            end
+        end
 
         if ball.x <= 0 then
             scores.p2 = scores.p2 + 1
