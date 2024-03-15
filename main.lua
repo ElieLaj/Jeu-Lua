@@ -43,25 +43,27 @@ function love.update(dt)
             chooseColors = false
             game = true
         end
-        if love.keyboard.isDown("z") and p1Ready == false then
-            p1Ready = true
-        end
-        if love.keyboard.isDown("up") and p2Ready == false then
-            p2Ready = true
-        end
+
         function love.keyreleased(key)
-            if key == "q" and p1Index < #colorList then
+            if key == "q" and p1Ready == false and p1Index < #colorList then
                 p1Index = p1Index + 1
                 player1.color = colorList[p1Index]
-            elseif key == "d" and p1Index > 1 then
+            elseif key == "d" and p1Ready == false and p1Index > 1 then
                 p1Index = p1Index - 1
                 player1.color = colorList[p1Index]
-            elseif key == "left" and p2Index < #colorList then
+            elseif key == "left" and p2Ready == false and p2Index < #colorList then
                 p2Index = p2Index + 1
                 player2.color = colorList[p2Index]
-            elseif key == "right" and p2Index > 1 then
+            elseif key == "right" and p2Ready == false and p2Index > 1 then
                 p2Index = p2Index - 1
                 player2.color = colorList[p2Index]
+            end
+
+            if key == "z" then
+                p1Ready = not p1Ready
+            end
+            if key == "up" then
+                p2Ready = not p2Ready
             end
         end
     elseif game == true then
@@ -117,22 +119,22 @@ function love.draw()
         -- Affichage de l'écran de choix de couleurs
 
         love.graphics.setColor(player1.color)
-        love.graphics.print("Appuyer sur 'Z' pour valider", window.x / 2 - 215, window.y / 2 - 150)
+        love.graphics.print("Appuyer sur 'Z' pour valider", window.x / 2 - 215, window.y / 2 - 140)
         love.graphics.print("Choisissez une couleur pour le joueur 1", window.x / 2 - 250, window.y / 2 - 100)
         love.graphics.rectangle("fill", window.x / 2 - 150, window.y / 2 - 60, player1.width, player1.height)
 
         if p1Ready == true then
-            love.graphics.print("Le joueur 1 est prêt", window.x / 2 - 175, window.y / 2 + 100)
+            love.graphics.print("Le joueur 1 est prêt", window.x / 2 - 200, window.y / 2 + 20)
         end
 
 
         love.graphics.setColor(player2.color)
-        love.graphics.print("Appuyer sur 'Flèche Haut' pour valider", window.x / 2 + 50, window.y / 2 - 150)
+        love.graphics.print("Appuyer sur 'Flèche Haut' pour valider", window.x / 2 + 50, window.y / 2 - 140)
         love.graphics.print("Choisissez une couleur pour le joueur 2", window.x / 2 + 50, window.y / 2 - 100)
         love.graphics.rectangle("fill", window.x / 2 + 150, window.y / 2 - 60, player2.width, player2.height)
 
         if p2Ready == true then
-            love.graphics.print("Le joueur 2 est prêt", window.x / 2 + 75, window.y / 2 + 100)
+            love.graphics.print("Le joueur 2 est prêt", window.x / 2 + 105, window.y / 2 + 20)
         end
     elseif game == true then
         love.graphics.setColor(player1.color)
